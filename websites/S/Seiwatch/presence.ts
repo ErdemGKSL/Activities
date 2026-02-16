@@ -3,7 +3,7 @@ import { getLanguage, localizedStrings } from './localization.js'
 import { getMeta } from './meta.js'
 
 const presence = new Presence({
-  clientId: 'WILL_BE_UPDATED_LATER',
+  clientId: '1472403708271792128',
 })
 
 const browsingTimestamp = Math.floor(Date.now() / 1000)

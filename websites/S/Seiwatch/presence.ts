@@ -10,12 +10,11 @@ const browsingTimestamp = Math.floor(Date.now() / 1000)
 
 presence.on('UpdateData', async () => {
   const page = getMeta('page')
-  const now = Math.floor(Date.now() / 1000)
   const language = getLanguage(await presence.getSetting<string>('lang').catch(() => null))
   const strings = localizedStrings[language]
 
   if (page === 'watch') {
-    const watchPresence = buildWatchPresence(now, strings)
+    const watchPresence = buildWatchPresence(strings)
     return presence.setActivity(watchPresence)
   }
 

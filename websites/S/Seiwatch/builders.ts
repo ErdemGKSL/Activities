@@ -1,8 +1,8 @@
-import { ActivityType, Assets } from 'premid'
-import { formatSeconds, getMeta, toNumber, toWholeSeconds } from './meta.js'
+import { ActivityType, Assets, getTimestamps } from 'premid'
+import { getMeta, toNumber, toWholeSeconds } from './meta.js'
 import { Images, type LocalizedStrings } from './types.js'
 
-export function buildWatchPresence(now: number, strings: LocalizedStrings): PresenceData {
+export function buildWatchPresence(strings: LocalizedStrings): PresenceData {
   const isPlaying = getMeta('watch:is-playing') === 'true'
   const watchState = getMeta('watch:state')
 
@@ -11,7 +11,6 @@ export function buildWatchPresence(now: number, strings: LocalizedStrings): Pres
   const episodeLabel = getMeta('watch:episode-label')
   const filmSlug = getMeta('watch:film-slug')
 
-  const playRoot = toWholeSeconds(toNumber(getMeta('watch:play-root')))
   const pausedSeconds = toWholeSeconds(toNumber(getMeta('watch:paused-seconds')))
   const currentSeconds = toWholeSeconds(toNumber(getMeta('watch:current-seconds')))
   const durationSeconds = toWholeSeconds(toNumber(getMeta('watch:duration-seconds')))
@@ -19,11 +18,14 @@ export function buildWatchPresence(now: number, strings: LocalizedStrings): Pres
   const label = episodeLabel || episodeTitle || filmSlug || strings.watchFallback
   const details = animeTitle ? `${animeTitle} - ${label}` : label
 
-  let resolvedCurrent = currentSeconds
-  if (isPlaying && playRoot !== null)
-    resolvedCurrent = Math.max(0, now - playRoot)
-  else if (!isPlaying && pausedSeconds !== null)
-    resolvedCurrent = pausedSeconds
+  const rawCurrent = isPlaying
+    ? currentSeconds ?? pausedSeconds
+    : pausedSeconds ?? currentSeconds
+  const resolvedCurrent = rawCurrent === null
+    ? null
+    : durationSeconds === null
+      ? rawCurrent
+      : Math.min(rawCurrent, durationSeconds)
 
   const presenceData: PresenceData = {
     type: ActivityType.Watching,
@@ -35,12 +37,10 @@ export function buildWatchPresence(now: number, strings: LocalizedStrings): Pres
   }
 
   const statePrefix = isPlaying || watchState === 'playing' ? strings.playing : strings.paused
-  presenceData.state = `${statePrefix} • ${formatSeconds(resolvedCurrent)} / ${formatSeconds(durationSeconds)} ${strings.secondsShort}`
+  presenceData.state = statePrefix
 
-  if (isPlaying && durationSeconds !== null && resolvedCurrent !== null) {
-    const startTimestamp = now - resolvedCurrent
-    presenceData.startTimestamp = startTimestamp
-    presenceData.endTimestamp = startTimestamp + durationSeconds
+  if (isPlaying && durationSeconds !== null && durationSeconds > 0 && resolvedCurrent !== null) {
+    [presenceData.startTimestamp, presenceData.endTimestamp] = getTimestamps(resolvedCurrent, durationSeconds)
   }
 
   return presenceData

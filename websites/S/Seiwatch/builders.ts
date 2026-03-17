@@ -30,7 +30,7 @@ export function buildWatchPresence(strings: LocalizedStrings): PresenceData {
   const presenceData: PresenceData = {
     type: ActivityType.Watching,
     largeImageKey: Images.Logo,
-    largeImageText: animeTitle || strings.fallbackTitle,
+    largeImageText: animeTitle || 'Seiwatch',
     details,
     smallImageKey: isPlaying ? Assets.Play : Assets.Pause,
     smallImageText: isPlaying ? strings.smallPlay : strings.smallPause,
@@ -68,30 +68,24 @@ export function buildBrowsingPresence(
 
   switch (page) {
     case 'home':
-      presenceData.details = strings.browsingHome
-      break
     case 'anime-detail':
-      presenceData.details = strings.viewingAnimeDetails
-      break
     case 'dashboard':
-      presenceData.details = strings.browsingDashboard
-      break
     case 'watch':
-      presenceData.details = strings.viewingWatchPage
+      presenceData.details = page === 'watch' || page === 'anime-detail'
+        ? strings.viewing
+        : strings.browsing
       break
     default:
-      presenceData.details = page
-        ? strings.browsingPage(page)
-        : strings.browsingSeiwatch
+      presenceData.details = strings.browsing
       break
   }
 
   if (routeAnimeSlug)
-    presenceData.state = `${strings.animePrefix}: ${routeAnimeSlug}`
+    presenceData.state = routeAnimeSlug
   else if (routeListSlug)
-    presenceData.state = `${strings.listPrefix}: ${routeListSlug}`
+    presenceData.state = routeListSlug
   else if (routeSection)
-    presenceData.state = `${strings.sectionPrefix}: ${routeSection}`
+    presenceData.state = routeSection
   else if (path)
     presenceData.state = path
 

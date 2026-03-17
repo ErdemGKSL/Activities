@@ -8,17 +8,8 @@ export interface LocalizedStrings {
   watchFallback: string
   playing: string
   paused: string
-  secondsShort: string
-  browsingHome: string
-  viewingAnimeDetails: string
-  browsingDashboard: string
-  viewingWatchPage: string
-  browsingPage: (page: string) => string
-  browsingSeiwatch: string
-  animePrefix: string
-  listPrefix: string
-  sectionPrefix: string
+  browsing: string
+  viewing: string
   smallPlay: string
   smallPause: string
-  fallbackTitle: string
 }

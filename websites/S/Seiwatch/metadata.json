@@ -12,7 +12,7 @@
   },
   "url": "seiwatch.net",
   "regExp": "^https?[:][/][/]([a-z0-9-]+[.])?seiwatch[.]net[/]",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "logo": "https://seiwatch.net/seiwatchlogo.webp",
   "thumbnail": "https://seiwatch.net/seiwatchlogo.webp",
   "color": "#1e162d",
@@ -24,8 +24,14 @@
   ],
   "settings": [
     {
-      "id": "lang",
-      "multiLanguage": true
+      "id": "language",
+      "title": "Language",
+      "icon": "fas fa-language",
+      "value": 0,
+      "values": [
+        "English",
+        "Türkçe"
+      ]
     }
   ]
 }

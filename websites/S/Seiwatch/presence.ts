@@ -10,7 +10,7 @@ const browsingTimestamp = Math.floor(Date.now() / 1000)
 
 presence.on('UpdateData', async () => {
   const page = getMeta('page')
-  const language = getLanguage(await presence.getSetting<string>('lang').catch(() => null))
+  const language = getLanguage(await presence.getSetting<number>('language').catch(() => 0))
   const strings = localizedStrings[language]
 
   if (page === 'watch') {

@@ -3,42 +3,24 @@ import type { ActivityLanguage, LocalizedStrings } from './types.js'
 export const localizedStrings: Record<ActivityLanguage, LocalizedStrings> = {
   en: {
     watchFallback: 'Watch',
-    playing: 'Watching',
+    playing: 'Playing',
     paused: 'Paused',
-    secondsShort: 'sec',
-    browsingHome: 'Browsing home page',
-    viewingAnimeDetails: 'Viewing anime details',
-    browsingDashboard: 'Browsing dashboard',
-    viewingWatchPage: 'Viewing watch page',
-    browsingPage: page => `Browsing ${page}`,
-    browsingSeiwatch: 'Browsing Seiwatch',
-    animePrefix: 'Anime',
-    listPrefix: 'List',
-    sectionPrefix: 'Section',
+    browsing: 'Browsing',
+    viewing: 'Viewing',
     smallPlay: 'Playing',
     smallPause: 'Paused',
-    fallbackTitle: 'Seiwatch',
   },
   tr: {
     watchFallback: 'İzleme',
-    playing: 'İzleniyor',
+    playing: 'Oynatılıyor',
     paused: 'Duraklatıldı',
-    secondsShort: 'sn',
-    browsingHome: 'Ana sayfa geziliyor',
-    viewingAnimeDetails: 'Anime detayı görüntüleniyor',
-    browsingDashboard: 'Panel geziliyor',
-    viewingWatchPage: 'İzleme sayfası görüntüleniyor',
-    browsingPage: page => `${page} geziliyor`,
-    browsingSeiwatch: 'Seiwatch geziliyor',
-    animePrefix: 'Anime',
-    listPrefix: 'Liste',
-    sectionPrefix: 'Bölüm',
+    browsing: 'Geziniyor',
+    viewing: 'Görüntülüyor',
     smallPlay: 'Oynatılıyor',
     smallPause: 'Duraklatıldı',
-    fallbackTitle: 'Seiwatch',
   },
 }
 
-export function getLanguage(langSetting: string | null): ActivityLanguage {
-  return langSetting === 'tr' ? 'tr' : 'en'
+export function getLanguage(languageSetting: number | null): ActivityLanguage {
+  return languageSetting === 1 ? 'tr' : 'en'
 }
